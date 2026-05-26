@@ -1,0 +1,87 @@
+[COMMANDER]
+1 Jasmine Boreal of the Seven
+
+[CREATURES]
+1 Alpine Grizzly
+1 Ancient Brontodon
+1 Axebane Stag
+1 Ballynock Trapper
+1 Besotted Knight
+1 Centaur Courser
+1 Cheeky House-Mouse
+1 Cliffhaven Sell-Sword
+1 Colossodon Yearling
+1 Devilthorn Fox
+1 Druid of the Cowl
+1 Dryad Greenseeker
+1 Fang-Druid Summoner
+1 Frog Butler
+1 Garruk's Gorehorn
+1 Indomitable Ancients
+1 Kalonian Tusker
+1 Kindercatch
+1 Oreskos Swiftclaw
+1 Primordial Wurm
+1 Quakestrider Ceratops
+1 Quilled Slagwurm
+1 Rampaging Baloths
+1 Raucous Audience
+1 Savannah Lions
+1 Sundial, Dawn Tyrant
+1 Thornhide Wolves
+1 Toski, Bearer of Secrets
+1 Vorstclaw
+1 Watchwolf
+1 Zopandrel, Hunger Dominus
+
+[ARTIFACTS]
+1 Arcane Signet
+1 Darksteel Ingot
+1 Manalith
+1 Selesnya Signet
+
+[INSTANTS]
+1 Ajani's Response
+1 Keep Out
+1 Make Your Move
+1 Naturalize
+1 Path to Exile
+1 Pillar Launch
+1 Titanic Growth
+
+[SORCERIES]
+1 Austere Command
+1 Cut a Deal
+1 Desecration Plague
+1 Elven Farsight
+1 Ezuri's Predation
+1 Harmonize
+1 Harvest Season
+1 Rabid Bite
+1 Scale Up
+1 Scale the Heights
+1 Starfall Invocation
+1 Three Visits
+1 Wildest Dreams
+1 Zimone's Experiment
+
+[ENCHANTMENTS]
+1 Colossal Majesty
+1 Felidar Retreat
+1 Luminous Bonds
+1 Oakenform
+1 Sandwurm Convergence
+1 Serra's Blessing
+
+[LANDS]
+1 Adventurer's Inn
+1 Blossoming Sands
+1 Crossroads Village
+14 Forest
+1 Krosan Verge
+1 Myriad Landscape
+13 Plains
+1 Radiant Grove
+1 Suburban Sanctuary
+2 Thriving Grove
+1 Thriving Heath
