@@ -84,17 +84,17 @@ We prefer a Table/CSV that matches these headers. We use google sheets for impor
 Required headers:
 
 ```csv
-Quantity,Card Title,Have Physical Copy,Cut,Cut Reason,Deck Rule,Rarity,MTG Edition,Image,Price
+Quantity,Card Title,Have Physical Copy,Cut,Cut Reason,Deck Rule,Rarity,MTG Edition,Mana Value,Image,Price,Rule Text
 ```
 
 Example:
 
 ```csv
-Quantity,Card Title,Have Physical Copy,Cut,Cut Reason,Deck Rule,Rarity,MTG Edition,Image,Price
-1,Ankle Biter,true,false,,On Theme,Common,OTJ,=IMAGE("https://api.scryfall.com/cards/named?exact=Ankle%20Biter&format=image&version=normal"),0.58$
-1,Old Cut Card,,true,"Trimmed low-impact equipment for draw engines.",Interaction,Uncommon,DMU,=IMAGE("https://api.scryfall.com/cards/named?exact=Old%20Cut%20Card&format=image&version=normal"),0.36$
+Quantity,Card Title,Have Physical Copy,Cut,Cut Reason,Deck Rule,Rarity,MTG Edition,Mana Value,Image,Price,Rule Text
+1,Ankle Biter,true,false,,On Theme,Common,OTJ,3,=IMAGE("https://api.scryfall.com/cards/named?exact=Ankle%20Biter&format=image&version=normal"),0.58$,<oracle text>
+1,Old Cut Card,,true,"Trimmed low-impact equipment for draw engines.",Interaction,Uncommon,DMU,4,=IMAGE("https://api.scryfall.com/cards/named?exact=Old%20Cut%20Card&format=image&version=normal"),0.36$,<oracle text>
 ...
 
 ```
 
-For Google Sheets generate an XLSX using `scripts/export_to_sheets.py`.
+For Google Sheets generate an XLSX using `./scripts/export_to_sheets.py` (run it directly so the `uv run --script` shebang installs dependencies).

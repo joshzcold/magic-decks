@@ -157,12 +157,35 @@ def main():
     formatting_ws.cell(row=1, column=1, value="Conditional formatting rules")
     formatting_ws.cell(row=2, column=1, value="Have Physical Copy: TRUE = green, FALSE = yellow")
     formatting_ws.cell(row=3, column=1, value="Cut: TRUE = red")
+
+    header_map = {name: idx + 1 for idx, name in enumerate(deck_header)}
+    have_col = header_map.get("Have Physical Copy")
+    cut_col = header_map.get("Cut")
+    have_letter = get_column_letter(have_col) if have_col else "C"
+    cut_letter = get_column_letter(cut_col) if cut_col else "D"
+
     formatting_ws.cell(row=5, column=1, value="Have Physical Copy formula (green)")
-    formatting_ws.cell(row=6, column=1, value="=OR($C2=TRUE,LOWER(TEXT($C2,\"@\"))=\"true\")")
+    formatting_ws.cell(
+        row=6,
+        column=1,
+        value=(
+            f"=OR(${have_letter}2=TRUE,LOWER(TEXT(${have_letter}2,\"@\"))=\"true\")"
+        ),
+    )
     formatting_ws.cell(row=7, column=1, value="Have Physical Copy formula (yellow)")
-    formatting_ws.cell(row=8, column=1, value="=OR($C2=FALSE,LOWER(TEXT($C2,\"@\"))=\"false\")")
+    formatting_ws.cell(
+        row=8,
+        column=1,
+        value=(
+            f"=OR(${have_letter}2=FALSE,LOWER(TEXT(${have_letter}2,\"@\"))=\"false\")"
+        ),
+    )
     formatting_ws.cell(row=9, column=1, value="Cut formula (red)")
-    formatting_ws.cell(row=10, column=1, value="=OR($D2=TRUE,LOWER(TEXT($D2,\"@\"))=\"true\")")
+    formatting_ws.cell(
+        row=10,
+        column=1,
+        value=f"=OR(${cut_letter}2=TRUE,LOWER(TEXT(${cut_letter}2,\"@\"))=\"true\")",
+    )
 
     wb.save(xlsx_path)
 
