@@ -110,6 +110,30 @@ def apply_conditional_formatting(ws, header, data_row_start=2):
         )
 
 
+def add_missing_copy_total(ws, header, row_count, data_row_start=2):
+    if not header or row_count <= 0:
+        return
+    header_map = {name: idx + 1 for idx, name in enumerate(header)}
+    have_col = header_map.get("Have Physical Copy")
+    price_col = header_map.get("Price")
+    if not have_col or not price_col:
+        return
+
+    start_row = data_row_start
+    end_row = data_row_start + row_count - 1
+    output_row = end_row + 2
+    have_letter = get_column_letter(have_col)
+    price_letter = get_column_letter(price_col)
+
+    ws.cell(row=output_row, column=1, value="Total Cost (Have Physical Copy = false)")
+    formula = (
+        f"=SUMPRODUCT(--(LOWER(TEXT(${have_letter}${start_row}:${have_letter}${end_row},\"@\"))=\"false\"),"
+        f"IFERROR(VALUE(SUBSTITUTE(${price_letter}${start_row}:${price_letter}${end_row},\"$\",\"\")),0))"
+    )
+    total_cell = ws.cell(row=output_row, column=price_col, value=formula)
+    total_cell.number_format = "$0.00"
+
+
 def main():
     import argparse
 
@@ -127,6 +151,7 @@ def main():
     deck_ws.title = "Deck"
     write_sheet(deck_ws, deck_header, deck_rows, freeze_row=1, scale=6)
     apply_conditional_formatting(deck_ws, deck_header)
+    add_missing_copy_total(deck_ws, deck_header, len(deck_rows))
 
     formatting_ws = wb.create_sheet("Formatting")
     formatting_ws.cell(row=1, column=1, value="Conditional formatting rules")
