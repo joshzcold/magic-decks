@@ -98,3 +98,21 @@ Quantity,Card Title,Have Physical Copy,Cut,Cut Reason,Deck Rule,Rarity,MTG Editi
 ```
 
 For Google Sheets generate an XLSX using `./scripts/export_to_sheets.py` (run it directly so the `uv run --script` shebang installs dependencies).
+
+## CSV Builder Script
+
+Use `./scripts/build_deck_csv.py` to generate a deck CSV with Scryfall data.
+
+Example usage:
+
+```bash
+python ./scripts/build_deck_csv.py ./jasmine_boreal_rebuild_05_25_2026.csv ./jasmine_boreal_rebuild_config.json
+```
+
+Config JSON fields:
+
+- `decklist`: list of objects with `name` and `count` fields
+- `adds`: list of cards to add
+- `cut_reasons`: mapping of card name to cut reason
+- `lands`, `ramp`, `card_advantage`, `interaction`, `wrath`: card lists for deck rules
+- `have_physical`: list of cards already owned
