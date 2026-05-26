@@ -8,12 +8,16 @@ When building or improving a deck we should use the scryfall mcp server to searc
 
 We generally want to keep below 1$ however for cards that change the game we can extend price.
 
-| Price | Rule
+
+| Price | Rule |
 | --- | --- |
 |<=1$ | General cards that build up the majority of the deck|
 |>=1$ | Should provide intresting value over normal card draw, ramp or interaction|
 |>5$| Should be super valuable to a game. Can win the game in the right scenario|
 
+
+When it comes to expensive cards in a list  you can ask if I already own this in person.
+If not you can try to recommend away from an expensive cards, otherwise assume I already have it and might want to use it as a powerful card.
 
 ## Deck Categories
 
@@ -77,9 +81,20 @@ For a 2 color commander I like to go 13 basic + 13 basic + 13 non-basic
 
 We prefer a Table/CSV that matches these headers. We use google sheets for import.
 
+Required headers:
+
 ```csv
-Quantity,Card Title,Have Physical Copy,Image,Price
-1,Ankle Biter,true,=IMAGE("https://api.scryfall.com/cards/named?exact=Ankle%20Biter&format=image&version=normal")
+Quantity,Card Title,Have Physical Copy,Cut,Cut Reason,Image,Price
+```
+
+Example:
+
+```csv
+Quantity,Card Title,Have Physical Copy,Cut,Cut Reason,Image,Price
+1,Ankle Biter,true,false,,=IMAGE("https://api.scryfall.com/cards/named?exact=Ankle%20Biter&format=image&version=normal"),0.58$
+1,Old Cut Card,,true,"Trimmed low-impact equipment for draw engines.",=IMAGE("https://api.scryfall.com/cards/named?exact=Old%20Cut%20Card&format=image&version=normal"),0.36$
 ...
 
 ```
+
+For Google Sheets generate an XLSX using `scripts/export_to_sheets.py`.
