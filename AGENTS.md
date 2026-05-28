@@ -2,7 +2,25 @@
 
 Here is my guide for building a good magic the gathering commander deck.
 
-When building or improving a deck we should use the scryfall mcp server to search and get details on cards
+When building or improving a deck we should use the local Scryfall bulk cache to look up card data and the Scryfall search tools for additions.
+
+## Import
+
+When given a url like this `https://scryfall.com/@joshzcold/decks/0f887feb-e05f-4d87-8ebc-45fd0e3d799b`
+
+export as a full csv so we can gather as much information needed when creating our csv as an export.
+
+Example (CSV export directly):
+
+- Open the deck page, click `Export`, choose `CSV (full)`.
+- Save the file locally and use it as the source decklist for analysis.
+- For analysis, save to a temp path like `/tmp/<deckname>.csv`.
+
+CLI option (recommended):
+
+```bash
+python3 ./scripts/fetch_deck_csv.py "https://scryfall.com/@joshzcold/decks/<deck-id>" /tmp/<deckname>.csv
+```
 
 ## Price
 
@@ -12,7 +30,7 @@ We generally want to keep below 1$ however for cards that change the game we can
 | Price | Rule |
 | --- | --- |
 |<=1$ | General cards that build up the majority of the deck|
-|>=1$ | Should provide intresting value over normal card draw, ramp or interaction|
+|>=1$ | Should provide interesting value over normal card draw, ramp or interaction|
 |>5$| Should be super valuable to a game. Can win the game in the right scenario|
 
 
@@ -34,7 +52,7 @@ Use this reference when choosing to keep or cut on-theme cards.
 | Mana Value | Requirement |
 | --- | --- |
 | >=6 | Must dramatically change the game or provide an insurmountable advantage within one turn |
-| 5 | Must provide a dramatic afvantage the turn it comes down or will run away in game withint 2 turns if not countered. |
+| 5 | Must provide a dramatic advantage the turn it comes down or will run away in game within 2 turns if not countered. |
 | 4 | Must be powerful pieces that push your deck into overdrive or set you up to have an incredibly impactful next few turns |
 | 1-3 | Need to be useful engine pieces that provide values turn after turn as the game progresses |
 
@@ -69,7 +87,7 @@ For a 2 color commander I like to go 13 basic + 13 basic + 13 non-basic
 
 - These are cards that fit:
     - Removal: removes opponent's cards
-    - Innteruption: stops an opponent's move/task
+    - Interruption: stops an opponent's move/task
     - Protection: protects my creatures from opponents.
     - Wrath: wipes the board
 
@@ -97,17 +115,34 @@ Quantity,Card Title,Have Physical Copy,Cut,Cut Reason,Deck Rule,Rarity,MTG Editi
 
 ```
 
-For Google Sheets generate an XLSX using `./scripts/export_to_sheets.py` (run it directly so the `uv run --script` shebang installs dependencies).
+For Google Sheets generate an XLSX using `./scripts/export_to_sheets.py` (run it directly so the `uv run --script` shebang installs dependencies). This also writes a `.txt` file for Scryfall import in the format `<quantity> <name>`.
 
 ## CSV Builder Script
 
 Use `./scripts/build_deck_csv.py` to generate a deck CSV with Scryfall data.
 
+Before building a deck CSV, ensure the bulk data cache and index are up to date:
+
+```bash
+python3 ./scripts/update_bulk_cache.py
+python3 ./scripts/build_bulk_index.py
+```
+
+If you already downloaded a bulk JSON, register it locally:
+
+```bash
+python3 ./scripts/update_bulk_cache.py --local /path/to/default-cards.json
+```
+
+This script assumes the decklist comes from Scryfall exports (no manual name normalization).
+
 Example usage:
 
 ```bash
-python ./scripts/build_deck_csv.py ./jasmine_boreal_rebuild_05_25_2026.csv ./jasmine_boreal_rebuild_config.json
+python3 ./scripts/build_deck_csv.py ./jasmine_boreal_rebuild_05_25_2026.csv ./jasmine_boreal_rebuild_config.json
 ```
+
+Deck exports default to `decks/` when you use relative paths.
 
 Config JSON fields:
 
@@ -116,3 +151,11 @@ Config JSON fields:
 - `cut_reasons`: mapping of card name to cut reason
 - `lands`, `ramp`, `card_advantage`, `interaction`, `wrath`: card lists for deck rules
 - `have_physical`: list of cards already owned
+
+## Config Bootstrap Script
+
+If you only have a Scryfall CSV export, generate a starter config JSON:
+
+```bash
+python3 ./scripts/build_config_from_csv.py /tmp/<deckname>.csv ./<deckname>_config.json
+```

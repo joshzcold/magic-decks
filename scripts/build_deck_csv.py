@@ -14,9 +14,6 @@ from pathlib import Path
 from typing import Any, Iterable
 from urllib.parse import quote
 
-import scryfall_api
-
-
 @dataclass(frozen=True)
 class DeckConfig:
     decklist: list[dict[str, Any]]
@@ -58,36 +55,6 @@ def parse_decklist_config(decklist: list[dict[str, Any]]) -> dict[str, int]:
     return cards
 
 
-def normalize_names(names: list[str], cache: dict[str, str]) -> dict[str, str]:
-    print(f"Normalizing {len(names)} names", flush=True)
-    normalized: dict[str, str] = {}
-    for name in names:
-        if name in cache:
-            normalized[name] = cache[name]
-            continue
-        card = scryfall_api.get_card_by_name(name)
-        canonical = card["name"]
-        cache[name] = canonical
-        normalized[name] = canonical
-    return normalized
-
-
-def normalize_list(items: list[str], cache: dict[str, str]) -> list[str]:
-    mapping = normalize_names(items, cache)
-    return [mapping[item] for item in items]
-
-
-def normalize_cut_reasons(
-    cut_reasons: dict[str, str],
-    cache: dict[str, str],
-) -> dict[str, str]:
-    mapping = normalize_names(list(cut_reasons.keys()), cache)
-    normalized: dict[str, str] = {}
-    for original, reason in cut_reasons.items():
-        normalized[mapping[original]] = reason
-    return normalized
-
-
 def image_formula(name: str) -> str:
     return (
         "=IMAGE(\"https://api.scryfall.com/cards/named?exact="
@@ -125,27 +92,23 @@ def iter_rows(
     interaction: set[str],
     wrath: set[str],
     have_physical: set[str],
+    index: dict[str, dict[str, Any]],
 ) -> Iterable[list[Any]]:
-    cache: dict[str, dict[str, Any]] = {}
     names = sorted(cards.keys())
     total = len(names)
 
-    for index, name in enumerate(names, start=1):
+    for idx, name in enumerate(names, start=1):
         qty = cards[name]
-        print(f"Fetching {index}/{total}: {name}", flush=True)
-        if name in cache:
-            card = cache[name]
-        else:
-            card = scryfall_api.get_card_by_name(name)
-            cache[name] = card
-
-        print(f"Processed {index}/{total}: {name}", flush=True)
+        print(f"Processing {idx}/{total}: {name}", flush=True)
+        card = index.get(name)
+        if not card:
+            raise SystemExit(f"Card not found in index: {name}")
 
         rarity = card.get("rarity", "")
         set_code = card.get("set", "")
         cmc = card.get("cmc", "")
         oracle_text = card.get("oracle_text", "")
-        price = card.get("prices", {}).get("usd")
+        price = card.get("price_usd")
         price_str = f"${price}" if price else ""
 
         yield [
@@ -164,19 +127,32 @@ def iter_rows(
         ]
 
 
+def load_index(path: Path) -> dict[str, dict[str, Any]]:
+    print(f"Loading index: {path}", flush=True)
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise SystemExit("Index file must be a JSON object.")
+    return data
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build deck CSV using Scryfall data.")
     parser.add_argument("csv_path", help="Output CSV path")
     parser.add_argument("config_path", help="JSON config file")
     parser.add_argument(
-        "--normalize",
-        action="store_true",
-        help="Normalize card names via Scryfall before processing",
+        "--index",
+        default="data/scryfall/default-cards-index.json",
+        help="Path to the local Scryfall card index JSON",
     )
     args = parser.parse_args()
 
     csv_path = Path(args.csv_path)
     config_path = Path(args.config_path)
+    index_path = Path(args.index)
+
+    if not csv_path.is_absolute():
+        csv_path = Path("decks") / csv_path
+    csv_path.parent.mkdir(parents=True, exist_ok=True)
 
     config = load_config(config_path)
     if not config.decklist:
@@ -185,45 +161,21 @@ def main() -> None:
 
     print(f"Decklist unique cards: {len(cards)}", flush=True)
 
-    normalize_cache: dict[str, str] = {}
+    index = load_index(index_path)
 
-    if args.normalize:
-        normalized_adds = normalize_list(config.adds, normalize_cache)
-        normalized_cut_reasons = normalize_cut_reasons(config.cut_reasons, normalize_cache)
-        normalized_lands = set(normalize_list(config.lands, normalize_cache))
-        normalized_ramp = set(normalize_list(config.ramp, normalize_cache))
-        normalized_card_advantage = set(
-            normalize_list(config.card_advantage, normalize_cache)
-        )
-        normalized_interaction = set(normalize_list(config.interaction, normalize_cache))
-        normalized_wrath = set(normalize_list(config.wrath, normalize_cache))
-        normalized_have_physical = set(normalize_list(config.have_physical, normalize_cache))
+    normalized_adds = list(config.adds)
+    normalized_cut_reasons = dict(config.cut_reasons)
+    normalized_lands = set(config.lands)
+    normalized_ramp = set(config.ramp)
+    normalized_card_advantage = set(config.card_advantage)
+    normalized_interaction = set(config.interaction)
+    normalized_wrath = set(config.wrath)
+    normalized_have_physical = set(config.have_physical)
 
-        print("Normalized rule lists", flush=True)
-
-        normalized_cards: dict[str, int] = {}
-        for name, qty in cards.items():
-            print(f"Canonicalizing: {name}", flush=True)
-            canonical = scryfall_api.get_card_by_name(name)["name"]
-            normalized_cards[canonical] = normalized_cards.get(canonical, 0) + qty
-
-        for name in normalized_adds:
-            print(f"Adding card: {name}", flush=True)
-            normalized_cards[name] = normalized_cards.get(name, 0) + 1
-    else:
-        normalized_adds = list(config.adds)
-        normalized_cut_reasons = dict(config.cut_reasons)
-        normalized_lands = set(config.lands)
-        normalized_ramp = set(config.ramp)
-        normalized_card_advantage = set(config.card_advantage)
-        normalized_interaction = set(config.interaction)
-        normalized_wrath = set(config.wrath)
-        normalized_have_physical = set(config.have_physical)
-
-        normalized_cards = dict(cards)
-        for name in normalized_adds:
-            print(f"Adding card: {name}", flush=True)
-            normalized_cards[name] = normalized_cards.get(name, 0) + 1
+    normalized_cards = dict(cards)
+    for name in normalized_adds:
+        print(f"Adding card: {name}", flush=True)
+        normalized_cards[name] = normalized_cards.get(name, 0) + 1
 
     header = [
         "Quantity",
@@ -253,6 +205,7 @@ def main() -> None:
             normalized_interaction,
             normalized_wrath,
             normalized_have_physical,
+            index,
         ):
             writer.writerow(row)
 

@@ -134,16 +134,50 @@ def add_missing_copy_total(ws, header, row_count, data_row_start=2):
     total_cell.number_format = "$0.00"
 
 
+def write_scryfall_txt(header, rows, txt_path: Path) -> None:
+    if not header:
+        raise SystemExit("CSV header missing.")
+    header_map = {name: idx for idx, name in enumerate(header)}
+    qty_idx = header_map.get("Quantity")
+    name_idx = header_map.get("Card Title")
+    if qty_idx is None or name_idx is None:
+        raise SystemExit("CSV must include Quantity and Card Title columns.")
+
+    lines: list[str] = []
+    for row in rows:
+        if qty_idx >= len(row) or name_idx >= len(row):
+            continue
+        qty = str(row[qty_idx]).strip()
+        name = str(row[name_idx]).strip()
+        if not qty or not name:
+            continue
+        lines.append(f"{qty} {name}")
+
+    txt_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
 def main():
     import argparse
 
     parser = argparse.ArgumentParser(description="Convert deck CSV to XLSX for Google Sheets.")
     parser.add_argument("csv_path", help="Path to the deck CSV file")
     parser.add_argument("xlsx_path", help="Output XLSX path")
+    parser.add_argument(
+        "txt_path",
+        nargs="?",
+        help="Output TXT path for Scryfall import (defaults to XLSX path with .txt)",
+    )
     args = parser.parse_args()
 
     csv_path = Path(args.csv_path)
     xlsx_path = Path(args.xlsx_path)
+    txt_path = Path(args.txt_path) if args.txt_path else xlsx_path.with_suffix(".txt")
+
+    if not xlsx_path.is_absolute():
+        xlsx_path = Path("decks") / xlsx_path
+    if not txt_path.is_absolute():
+        txt_path = Path("decks") / txt_path
+    xlsx_path.parent.mkdir(parents=True, exist_ok=True)
 
     deck_header, deck_rows = parse_csv(csv_path)
     wb = Workbook()
@@ -188,6 +222,8 @@ def main():
     )
 
     wb.save(xlsx_path)
+
+    write_scryfall_txt(deck_header, deck_rows, txt_path)
 
 
 if __name__ == "__main__":
