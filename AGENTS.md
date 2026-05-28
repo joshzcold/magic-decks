@@ -10,17 +10,46 @@ When given a url like this `https://scryfall.com/@joshzcold/decks/0f887feb-e05f-
 
 export as a full csv so we can gather as much information needed when creating our csv as an export.
 
-Example (CSV export directly):
-
-- Open the deck page, click `Export`, choose `CSV (full)`.
-- Save the file locally and use it as the source decklist for analysis.
-- For analysis, save to a temp path like `/tmp/<deckname>.csv`.
-
-CLI option (recommended):
-
 ```bash
 python3 ./scripts/fetch_deck_csv.py "https://scryfall.com/@joshzcold/decks/<deck-id>" /tmp/<deckname>.csv
 ```
+
+Assume that cards from the list are cards we have physical ownership of.
+
+## CSV Builder Script
+
+Use `python3 ./scripts/build_deck_csv.py` to generate a deck CSV with Scryfall data.
+
+Before building a deck CSV, ensure the bulk data cache and index are up to date:
+
+```bash
+python3 ./scripts/update_bulk_cache.py
+python3 ./scripts/build_bulk_index.py
+```
+
+If you already downloaded a bulk JSON, register it locally:
+
+```bash
+python3 ./scripts/update_bulk_cache.py --local /path/to/default-cards.json
+```
+
+This script assumes the decklist comes from Scryfall exports (no manual name normalization).
+
+Example usage:
+
+```bash
+python3 ./scripts/build_deck_csv.py ./jasmine_boreal_rebuild_05_25_2026.csv ./jasmine_boreal_rebuild_config.json
+```
+
+Deck exports default to `decks/` when you use relative paths.
+
+Config JSON fields:
+
+- `decklist`: list of objects with `name` and `count` fields
+- `adds`: list of cards to add
+- `cut_reasons`: mapping of card name to cut reason
+- `lands`, `ramp`, `card_advantage`, `interaction`, `wrath`: card lists for deck rules
+- `have_physical`: list of cards already owned
 
 ## Price
 
@@ -95,6 +124,18 @@ For a 2 color commander I like to go 13 basic + 13 basic + 13 non-basic
 
 - Have x2 pieces of wrath
 
+## Making Suggestions/Cuts
+
+When finding replaces for cards that are in-effective always provide a table of cards that are being cut and for what reason. Display the replacement cards next to the cut card and include a reason for why we need the new card.
+
+## Config Bootstrap Script
+
+If you only have a Scryfall CSV export, generate a starter config JSON:
+
+```bash
+python3 ./scripts/build_config_from_csv.py /tmp/<deckname>.csv ./<deckname>_config.json
+```
+
 ## Export
 
 We prefer a Table/CSV that matches these headers. We use google sheets for import.
@@ -115,47 +156,4 @@ Quantity,Card Title,Have Physical Copy,Cut,Cut Reason,Deck Rule,Rarity,MTG Editi
 
 ```
 
-For Google Sheets generate an XLSX using `./scripts/export_to_sheets.py` (run it directly so the `uv run --script` shebang installs dependencies). This also writes a `.txt` file for Scryfall import in the format `<quantity> <name>`.
-
-## CSV Builder Script
-
-Use `./scripts/build_deck_csv.py` to generate a deck CSV with Scryfall data.
-
-Before building a deck CSV, ensure the bulk data cache and index are up to date:
-
-```bash
-python3 ./scripts/update_bulk_cache.py
-python3 ./scripts/build_bulk_index.py
-```
-
-If you already downloaded a bulk JSON, register it locally:
-
-```bash
-python3 ./scripts/update_bulk_cache.py --local /path/to/default-cards.json
-```
-
-This script assumes the decklist comes from Scryfall exports (no manual name normalization).
-
-Example usage:
-
-```bash
-python3 ./scripts/build_deck_csv.py ./jasmine_boreal_rebuild_05_25_2026.csv ./jasmine_boreal_rebuild_config.json
-```
-
-Deck exports default to `decks/` when you use relative paths.
-
-Config JSON fields:
-
-- `decklist`: list of objects with `name` and `count` fields
-- `adds`: list of cards to add
-- `cut_reasons`: mapping of card name to cut reason
-- `lands`, `ramp`, `card_advantage`, `interaction`, `wrath`: card lists for deck rules
-- `have_physical`: list of cards already owned
-
-## Config Bootstrap Script
-
-If you only have a Scryfall CSV export, generate a starter config JSON:
-
-```bash
-python3 ./scripts/build_config_from_csv.py /tmp/<deckname>.csv ./<deckname>_config.json
-```
+For Google Sheets generate an XLSX using `uv run --script ./scripts/export_to_sheets.py` (run it directly so the `uv run --script` shebang installs dependencies). This also writes a `.txt` file for Scryfall import in the format `<quantity> <name>`.

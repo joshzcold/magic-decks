@@ -1,9 +1,4 @@
-#!/usr/bin/env -S uv run --script
-#
-# /// script
-# requires-python = ">=3.12"
-# dependencies = []
-# ///
+#!/usr/bin/env python3
 from __future__ import annotations
 
 import argparse
@@ -13,6 +8,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable
 from urllib.parse import quote
+
 
 @dataclass(frozen=True)
 class DeckConfig:
@@ -56,10 +52,7 @@ def parse_decklist_config(decklist: list[dict[str, Any]]) -> dict[str, int]:
 
 
 def image_formula(name: str) -> str:
-    return (
-        "=IMAGE(\"https://api.scryfall.com/cards/named?exact="
-        f"{quote(name)}&format=image&version=normal\")"
-    )
+    return f'=IMAGE("https://api.scryfall.com/cards/named?exact={quote(name)}&format=image&version=normal")'
 
 
 def deck_rule_for(
@@ -114,7 +107,7 @@ def iter_rows(
         yield [
             qty,
             name,
-            "true" if name in have_physical else "",
+            "true" if name in have_physical else "false",
             "true" if name in cut_reasons else "false",
             cut_reasons.get(name, ""),
             deck_rule_for(name, lands, ramp, card_advantage, interaction, wrath),
