@@ -168,7 +168,7 @@ def main() -> None:
     normalized_cards = dict(cards)
     for name in normalized_adds:
         print(f"Adding card: {name}", flush=True)
-        normalized_cards[name] = normalized_cards.get(name, 0) + 1
+        # adds is a tracking list only — cards must also appear in decklist with their count
 
     header = [
         "Quantity",

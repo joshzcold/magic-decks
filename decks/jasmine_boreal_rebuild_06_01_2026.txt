@@ -1,0 +1,73 @@
+1 Abzan Beastmaster
+1 Adventurer's Inn
+1 Alpine Grizzly
+1 Ancient Brontodon
+1 Arcane Signet
+1 Austere Command
+1 Beast Whisperer
+1 Blossoming Sands
+1 Centaur Courser
+1 Colossal Majesty
+1 Colossodon Yearling
+1 Conclave Mentor
+1 Cowl Prowler
+1 Crossroads Village
+1 Cultivate
+1 Darksteel Ingot
+1 Devilthorn Fox
+1 Elemental Bond
+1 Enormous Baloth
+1 Ezuri's Predation
+1 Felidar Retreat
+1 Flopsie, Bumi's Buddy
+15 Forest
+1 Frog Butler
+1 Garruk's Packleader
+1 Gigantosaurus
+1 Good-Fortune Unicorn
+1 Gravity Well
+1 Harmonize
+1 Harvest Season
+1 Incubation Druid
+1 Indomitable Ancients
+1 Jasmine Boreal of the Seven
+1 Keep Out
+1 Kenrith's Transformation
+1 Krosan Verge
+1 Luminous Bonds
+1 Make Your Move
+1 Meltstrider Eulogist
+1 Mentor of the Meek
+1 Myriad Landscape
+1 Naturalize
+1 Oak Street Innkeeper
+1 Orazca Frillback
+1 Oreskos Swiftclaw
+13 Plains
+1 Quakestrider Ceratops
+1 Rabid Bite
+1 Radiant Grove
+1 Rampaging Baloths
+1 Raucous Audience
+1 Rootborn Defenses
+1 Runic Armasaur
+1 Ruxa, Patient Professor
+1 Sandwurm Convergence
+1 Savannah Lions
+1 Selesnya Signet
+1 Selvala, Heart of the Wilds
+1 Starfall Invocation
+1 Suburban Sanctuary
+1 Sundial, Dawn Tyrant
+1 Symmetry Matrix
+1 Terrian, World Tyrant
+2 Thriving Grove
+1 Thriving Heath
+1 Tireless Tracker
+1 Titanic Growth
+1 Toski, Bearer of Secrets
+1 Tuinvale Treefolk // Oaken Boon
+1 Vorstclaw
+1 Watchwolf
+1 Whiptail Wurm
+1 Zopandrel, Hunger Dominus

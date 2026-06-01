@@ -16,6 +16,23 @@ python3 ./scripts/fetch_deck_csv.py "https://scryfall.com/@joshzcold/decks/<deck
 
 Assume that cards from the list are cards we have physical ownership of.
 
+## Validation
+
+Always validate the config before building the CSV:
+
+```bash
+python3 ./scripts/validate_deck_config.py <config.json> --import-csv /tmp/<deckname>.csv
+```
+
+This checks:
+- Active card count == 100
+- Category minimums met (lands 38, ramp 10, card_advantage 12, interaction 10, wrath 2)
+- No duplicate entries in category lists
+- All cut_reasons and category list cards exist in decklist
+- All original deck cards are in `have_physical`
+
+Fix all errors before proceeding to build.
+
 ## CSV Builder Script
 
 Use `python3 ./scripts/build_deck_csv.py` to generate a deck CSV with Scryfall data.
@@ -157,3 +174,9 @@ Quantity,Card Title,Have Physical Copy,Cut,Cut Reason,Deck Rule,Rarity,MTG Editi
 ```
 
 For Google Sheets generate an XLSX using `uv run --script ./scripts/export_to_sheets.py` (run it directly so the `uv run --script` shebang installs dependencies). This also writes a `.txt` file for Scryfall import in the format `<quantity> <name>`.
+
+**Important:** The script automatically prepends `decks/` to the xlsx and txt output paths. Pass only the filename (not the full path) for those arguments:
+
+```bash
+uv run --script ./scripts/export_to_sheets.py decks/<deckname>.csv <deckname>.xlsx <deckname>.txt
+```

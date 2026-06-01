@@ -143,9 +143,12 @@ def write_scryfall_txt(header, rows, txt_path: Path) -> None:
     if qty_idx is None or name_idx is None:
         raise SystemExit("CSV must include Quantity and Card Title columns.")
 
+    cut_idx = header_map.get("Cut")
     lines: list[str] = []
     for row in rows:
         if qty_idx >= len(row) or name_idx >= len(row):
+            continue
+        if cut_idx is not None and cut_idx < len(row) and str(row[cut_idx]).strip().lower() == "true":
             continue
         qty = str(row[qty_idx]).strip()
         name = str(row[name_idx]).strip()
