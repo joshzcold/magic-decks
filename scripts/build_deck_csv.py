@@ -4,6 +4,9 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import time
+import urllib.error
+import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable
@@ -51,6 +54,36 @@ def parse_decklist_config(decklist: list[dict[str, Any]]) -> dict[str, int]:
     return cards
 
 
+def fetch_live_prices(names: list[str]) -> dict[str, str]:
+    """Fetch current USD prices from the Scryfall API for added cards only.
+
+    Scryfall blocks Python's default urllib user-agent, so we set a custom one.
+    """
+    prices: dict[str, str] = {}
+    total = len(names)
+    for i, name in enumerate(names, start=1):
+        url = f"https://api.scryfall.com/cards/named?exact={quote(name)}"
+        try:
+            # Scryfall requires Accept header — its Vary: Accept response means
+            # requests without it fail content negotiation with a 400.
+            req = urllib.request.Request(url, headers={
+                "User-Agent": "MagicDeckBuilder/1.0",
+                "Accept": "*/*",
+            })
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                data = json.loads(resp.read())
+            usd = data.get("prices", {}).get("usd")
+            if usd:
+                prices[name] = usd
+            print(f"  [{i}/{total}] {name}: ${usd or 'N/A'}", flush=True)
+        except Exception as e:
+            print(f"  [{i}/{total}] {name}: price fetch failed ({e})", flush=True)
+        # Scryfall asks for 50-100ms between requests
+        if i < total:
+            time.sleep(0.075)
+    return prices
+
+
 def image_formula(name: str) -> str:
     return f'=IMAGE("https://api.scryfall.com/cards/named?exact={quote(name)}&format=image&version=normal")'
 
@@ -86,6 +119,7 @@ def iter_rows(
     wrath: set[str],
     have_physical: set[str],
     index: dict[str, dict[str, Any]],
+    live_prices: dict[str, str] | None = None,
 ) -> Iterable[list[Any]]:
     names = sorted(cards.keys())
     total = len(names)
@@ -101,7 +135,11 @@ def iter_rows(
         set_code = card.get("set", "")
         cmc = card.get("cmc", "")
         oracle_text = card.get("oracle_text", "")
-        price = card.get("price_usd")
+        # Prefer live API price, fall back to cached index price
+        if live_prices and name in live_prices:
+            price = live_prices[name]
+        else:
+            price = card.get("price_usd")
         price_str = f"${price}" if price else ""
 
         yield [
@@ -136,6 +174,11 @@ def main() -> None:
         "--index",
         default="data/scryfall/default-cards-index.json",
         help="Path to the local Scryfall card index JSON",
+    )
+    parser.add_argument(
+        "--no-live-prices",
+        action="store_true",
+        help="Skip live Scryfall API price lookups and use cached index prices only",
     )
     args = parser.parse_args()
 
@@ -185,6 +228,12 @@ def main() -> None:
         "Rule Text",
     ]
 
+    live_prices: dict[str, str] | None = None
+    if not args.no_live_prices and normalized_adds:
+        adds_to_fetch = sorted(set(normalized_adds) & normalized_cards.keys())
+        print(f"Fetching live prices from Scryfall API for {len(adds_to_fetch)} added cards...", flush=True)
+        live_prices = fetch_live_prices(adds_to_fetch)
+
     print(f"Writing CSV: {csv_path}", flush=True)
     with csv_path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.writer(handle)
@@ -199,6 +248,7 @@ def main() -> None:
             normalized_wrath,
             normalized_have_physical,
             index,
+            live_prices,
         ):
             writer.writerow(row)
 

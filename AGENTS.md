@@ -4,6 +4,22 @@ Here is my guide for building a good magic the gathering commander deck.
 
 When building or improving a deck we should use the local Scryfall bulk cache to look up card data and the Scryfall search tools for additions.
 
+## Owned Cards
+
+A Google Sheets inventory tracks all physical cards owned. Sync it before deck building:
+
+```bash
+python3 ./scripts/fetch_owned_cards.py
+```
+
+This saves to `data/owned_cards.csv`. Look up a specific card:
+
+```bash
+python3 ./scripts/fetch_owned_cards.py --no-sync --lookup "Sol Ring"
+```
+
+Use `--no-sync` to skip the download when the cache is already fresh. The sheet is a ManaBox export with columns: Binder Name, Name, Quantity, Foil, Condition, Scryfall ID.
+
 ## Import
 
 When given a url like this `https://scryfall.com/@joshzcold/decks/0f887feb-e05f-4d87-8ebc-45fd0e3d799b`
@@ -11,17 +27,17 @@ When given a url like this `https://scryfall.com/@joshzcold/decks/0f887feb-e05f-
 export as a full csv so we can gather as much information needed when creating our csv as an export.
 
 ```bash
-python3 ./scripts/fetch_deck_csv.py "https://scryfall.com/@joshzcold/decks/<deck-id>" /tmp/<deckname>.csv
+mkdir -p tmp
+python3 ./scripts/fetch_deck_csv.py "https://scryfall.com/@joshzcold/decks/<deck-id>" tmp/<deckname>.csv
 ```
-
-Assume that cards from the list are cards we have physical ownership of.
 
 ## Validation
 
 Always validate the config before building the CSV:
 
 ```bash
-python3 ./scripts/validate_deck_config.py <config.json> --import-csv /tmp/<deckname>.csv
+mkdir -p tmp
+python3 ./scripts/validate_deck_config.py <config.json> --import-csv tmp/<deckname>.csv
 ```
 
 This checks:
@@ -51,6 +67,8 @@ python3 ./scripts/update_bulk_cache.py --local /path/to/default-cards.json
 ```
 
 This script assumes the decklist comes from Scryfall exports (no manual name normalization).
+
+By default the script fetches **live prices** from the Scryfall API at build time (one request per card, ~75ms apart). This ensures prices in the exported spreadsheet are current. Use `--no-live-prices` to skip API calls and use cached bulk index prices instead (faster but potentially stale).
 
 Example usage:
 
@@ -150,7 +168,8 @@ When finding replaces for cards that are in-effective always provide a table of 
 If you only have a Scryfall CSV export, generate a starter config JSON:
 
 ```bash
-python3 ./scripts/build_config_from_csv.py /tmp/<deckname>.csv ./<deckname>_config.json
+mkdir -p tmp
+python3 ./scripts/build_config_from_csv.py tmp/<deckname>.csv ./<deckname>_config.json
 ```
 
 ## Export

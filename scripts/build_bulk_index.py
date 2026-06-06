@@ -53,14 +53,39 @@ def main() -> None:
             continue
         if card.get("game") and card.get("game") not in {"paper", "mtgo", "arena"}:
             continue
+        # Skip premium/specialty sets — prices are inflated and unrepresentative
+        if card.get("set_type") in {"secret_lair", "memorabilia", "treasure_chest", "box"}:
+            continue
 
         prices = card.get("prices") if isinstance(card.get("prices"), dict) else {}
         image_uris = card.get("image_uris") if isinstance(card.get("image_uris"), dict) else {}
 
+        # Prefer regular printings over premium variants (showcase/borderless/extendedart
+        # cost significantly more and don't represent market price for gameplay copies)
+        PREMIUM_FRAMES = {"showcase", "extendedart", "inverted"}
+        frame_effects = set(card.get("frame_effects") or [])
+        is_premium = bool(frame_effects & PREMIUM_FRAMES) or card.get("border_color") == "borderless"
+
         released_at = card.get("released_at") or ""
+        new_price = prices.get("usd")
         current = index.get(name)
-        if current and current.get("released_at", "") >= released_at:
-            continue
+        if current:
+            current_price = current.get("price_usd")
+            current_premium = current.get("is_premium", False)
+            # Never replace a regular printing with a premium one
+            if not current_premium and is_premium:
+                continue
+            # Always prefer a regular printing over a premium one
+            if current_premium and not is_premium:
+                pass  # fall through to replace
+            # Don't replace a priced entry with an unpriced one
+            elif current_price and not new_price:
+                continue
+            # Always prefer a priced entry over an unpriced one, regardless of date
+            elif not current_price and new_price:
+                pass  # fall through to replace
+            elif current.get("released_at", "") >= released_at:
+                continue
 
         index[name] = {
             "name": name,
@@ -71,6 +96,7 @@ def main() -> None:
             "price_usd": prices.get("usd", ""),
             "image_normal": image_uris.get("normal", ""),
             "released_at": released_at,
+            "is_premium": is_premium,
         }
 
     INDEX_PATH.write_text(json.dumps(index, indent=2), encoding="utf-8")
