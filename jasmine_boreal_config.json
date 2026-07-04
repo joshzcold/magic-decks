@@ -1,0 +1,427 @@
+{
+  "decklist": [
+    {
+      "name": "Ezuri's Predation",
+      "count": 1
+    },
+    {
+      "name": "Gilded Lotus",
+      "count": 1
+    },
+    {
+      "name": "Harmonize",
+      "count": 1
+    },
+    {
+      "name": "Primordial Wurm",
+      "count": 1
+    },
+    {
+      "name": "Oreskos Swiftclaw",
+      "count": 1
+    },
+    {
+      "name": "Garruk's Packleader",
+      "count": 1
+    },
+    {
+      "name": "Conclave Mentor",
+      "count": 1
+    },
+    {
+      "name": "Felidar Retreat",
+      "count": 1
+    },
+    {
+      "name": "Lurking Predators",
+      "count": 1
+    },
+    {
+      "name": "Runic Armasaur",
+      "count": 1
+    },
+    {
+      "name": "Arcane Signet",
+      "count": 1
+    },
+    {
+      "name": "Cycle of Renewal",
+      "count": 1
+    },
+    {
+      "name": "Austere Command",
+      "count": 1
+    },
+    {
+      "name": "Oak Street Innkeeper",
+      "count": 1
+    },
+    {
+      "name": "Indomitable Ancients",
+      "count": 1
+    },
+    {
+      "name": "Savannah Lions",
+      "count": 1
+    },
+    {
+      "name": "Watchwolf",
+      "count": 1
+    },
+    {
+      "name": "Good-Fortune Unicorn",
+      "count": 1
+    },
+    {
+      "name": "Wildest Dreams",
+      "count": 1
+    },
+    {
+      "name": "Cultivate",
+      "count": 1
+    },
+    {
+      "name": "Enormous Baloth",
+      "count": 1
+    },
+    {
+      "name": "Rampaging Baloths",
+      "count": 1
+    },
+    {
+      "name": "Vorstclaw",
+      "count": 1
+    },
+    {
+      "name": "Incubation Druid",
+      "count": 1
+    },
+    {
+      "name": "Gigantosaurus",
+      "count": 1
+    },
+    {
+      "name": "Abzan Beastmaster",
+      "count": 1
+    },
+    {
+      "name": "Keep Out",
+      "count": 1
+    },
+    {
+      "name": "Make Your Move",
+      "count": 1
+    },
+    {
+      "name": "Terrian, World Tyrant",
+      "count": 1
+    },
+    {
+      "name": "Beast Whisperer",
+      "count": 1
+    },
+    {
+      "name": "Selvala, Heart of the Wilds",
+      "count": 1
+    },
+    {
+      "name": "Orazca Frillback",
+      "count": 1
+    },
+    {
+      "name": "Starfall Invocation",
+      "count": 1
+    },
+    {
+      "name": "Tuinvale Treefolk // Oaken Boon",
+      "count": 1
+    },
+    {
+      "name": "Elemental Bond",
+      "count": 1
+    },
+    {
+      "name": "Cowl Prowler",
+      "count": 1
+    },
+    {
+      "name": "Colossodon Yearling",
+      "count": 1
+    },
+    {
+      "name": "Toski, Bearer of Secrets",
+      "count": 1
+    },
+    {
+      "name": "Selesnya Signet",
+      "count": 1
+    },
+    {
+      "name": "Raucous Audience",
+      "count": 1
+    },
+    {
+      "name": "Flopsie, Bumi's Buddy",
+      "count": 1
+    },
+    {
+      "name": "Hunter's Insight",
+      "count": 1
+    },
+    {
+      "name": "Sandwurm Convergence",
+      "count": 1
+    },
+    {
+      "name": "Naturalize",
+      "count": 1
+    },
+    {
+      "name": "Gravity Well",
+      "count": 1
+    },
+    {
+      "name": "Prismatic Omen",
+      "count": 1
+    },
+    {
+      "name": "Sundial, Dawn Tyrant",
+      "count": 1
+    },
+    {
+      "name": "Quakestrider Ceratops",
+      "count": 1
+    },
+    {
+      "name": "Rabid Bite",
+      "count": 1
+    },
+    {
+      "name": "Ruxa, Patient Professor",
+      "count": 1
+    },
+    {
+      "name": "Tireless Tracker",
+      "count": 1
+    },
+    {
+      "name": "Kenrith's Transformation",
+      "count": 1
+    },
+    {
+      "name": "Colossal Majesty",
+      "count": 1
+    },
+    {
+      "name": "Quilled Slagwurm",
+      "count": 1
+    },
+    {
+      "name": "Ancient Brontodon",
+      "count": 1
+    },
+    {
+      "name": "Fang-Druid Summoner",
+      "count": 1
+    },
+    {
+      "name": "Muraganda Petroglyphs",
+      "count": 1
+    },
+    {
+      "name": "Rootborn Defenses",
+      "count": 1
+    },
+    {
+      "name": "Luminous Bonds",
+      "count": 1
+    },
+    {
+      "name": "Alpine Grizzly",
+      "count": 1
+    },
+    {
+      "name": "Zopandrel, Hunger Dominus",
+      "count": 1
+    },
+    {
+      "name": "Plains",
+      "count": 13
+    },
+    {
+      "name": "Krosan Verge",
+      "count": 1
+    },
+    {
+      "name": "Forest",
+      "count": 16
+    },
+    {
+      "name": "Blossoming Sands",
+      "count": 1
+    },
+    {
+      "name": "Crossroads Village",
+      "count": 1
+    },
+    {
+      "name": "Myriad Landscape",
+      "count": 1
+    },
+    {
+      "name": "Thriving Grove",
+      "count": 1
+    },
+    {
+      "name": "Suburban Sanctuary",
+      "count": 1
+    },
+    {
+      "name": "Adventurer's Inn",
+      "count": 1
+    },
+    {
+      "name": "Thriving Heath",
+      "count": 1
+    },
+    {
+      "name": "Radiant Grove",
+      "count": 1
+    },
+    {
+      "name": "Jasmine Boreal of the Seven",
+      "count": 1
+    }
+  ],
+  "adds": [
+    "Cycle of Renewal",
+    "Gilded Lotus",
+    "Hunter's Insight",
+    "Lurking Predators",
+    "Muraganda Petroglyphs",
+    "Prismatic Omen"
+  ],
+  "cut_reasons": {},
+  "lands": [
+    "Plains",
+    "Forest",
+    "Krosan Verge",
+    "Blossoming Sands",
+    "Crossroads Village",
+    "Myriad Landscape",
+    "Thriving Grove",
+    "Suburban Sanctuary",
+    "Adventurer's Inn",
+    "Thriving Heath",
+    "Radiant Grove"
+  ],
+  "ramp": [
+    "Incubation Druid",
+    "Arcane Signet",
+    "Selesnya Signet",
+    "Selvala, Heart of the Wilds",
+    "Raucous Audience",
+    "Myriad Landscape",
+    "Krosan Verge",
+    "Cultivate",
+    "Gilded Lotus"
+  ],
+  "card_advantage": [
+    "Toski, Bearer of Secrets",
+    "Colossal Majesty",
+    "Harmonize",
+    "Runic Armasaur",
+    "Beast Whisperer",
+    "Elemental Bond",
+    "Garruk's Packleader",
+    "Tireless Tracker",
+    "Abzan Beastmaster",
+    "Hunter's Insight",
+    "Cycle of Renewal",
+    "Lurking Predators"
+  ],
+  "interaction": [
+    "Kenrith's Transformation",
+    "Naturalize",
+    "Rabid Bite",
+    "Make Your Move",
+    "Keep Out",
+    "Luminous Bonds",
+    "Gravity Well",
+    "Oak Street Innkeeper",
+    "Rootborn Defenses"
+  ],
+  "wrath": [
+    "Austere Command",
+    "Starfall Invocation"
+  ],
+  "have_physical": [
+    "Abzan Beastmaster",
+    "Adventurer's Inn",
+    "Alpine Grizzly",
+    "Ancient Brontodon",
+    "Arcane Signet",
+    "Austere Command",
+    "Beast Whisperer",
+    "Blossoming Sands",
+    "Colossal Majesty",
+    "Colossodon Yearling",
+    "Cowl Prowler",
+    "Crossroads Village",
+    "Cultivate",
+    "Cycle of Renewal",
+    "Elemental Bond",
+    "Enormous Baloth",
+    "Ezuri's Predation",
+    "Felidar Retreat",
+    "Flopsie, Bumi's Buddy",
+    "Forest",
+    "Garruk's Packleader",
+    "Gigantosaurus",
+    "Gilded Lotus",
+    "Good-Fortune Unicorn",
+    "Gravity Well",
+    "Harmonize",
+    "Hunter's Insight",
+    "Indomitable Ancients",
+    "Jasmine Boreal of the Seven",
+    "Keep Out",
+    "Kenrith's Transformation",
+    "Krosan Verge",
+    "Luminous Bonds",
+    "Lurking Predators",
+    "Make Your Move",
+    "Myriad Landscape",
+    "Naturalize",
+    "Oak Street Innkeeper",
+    "Orazca Frillback",
+    "Oreskos Swiftclaw",
+    "Plains",
+    "Primordial Wurm",
+    "Quakestrider Ceratops",
+    "Quilled Slagwurm",
+    "Rabid Bite",
+    "Radiant Grove",
+    "Rampaging Baloths",
+    "Raucous Audience",
+    "Rootborn Defenses",
+    "Runic Armasaur",
+    "Sandwurm Convergence",
+    "Savannah Lions",
+    "Selesnya Signet",
+    "Selvala, Heart of the Wilds",
+    "Starfall Invocation",
+    "Suburban Sanctuary",
+    "Sundial, Dawn Tyrant",
+    "Terrian, World Tyrant",
+    "Thriving Grove",
+    "Thriving Heath",
+    "Tireless Tracker",
+    "Toski, Bearer of Secrets",
+    "Tuinvale Treefolk // Oaken Boon",
+    "Vorstclaw",
+    "Watchwolf",
+    "Wildest Dreams",
+    "Zopandrel, Hunger Dominus"
+  ]
+}
