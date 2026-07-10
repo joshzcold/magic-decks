@@ -118,7 +118,7 @@ Use this reference when choosing to keep or cut on-theme cards.
 | >=6 | Must dramatically change the game or provide an insurmountable advantage within one turn |
 | 5 | Must provide a dramatic advantage the turn it comes down or will run away in game within 2 turns if not countered. |
 | 4 | Must be powerful pieces that push your deck into overdrive or set you up to have an incredibly impactful next few turns |
-| 1-3 | Need to be useful engine pieces that provide values turn after turn as the game progresses |
+| 1-3 | Need to be useful engine pieces that provide value turn after turn as the game progresses |
 
 
 ### Card Advantage
